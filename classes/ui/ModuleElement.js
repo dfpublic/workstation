@@ -34,8 +34,6 @@ class ModuleElement {
         let { _module, module_element_id } = this;
         let system_module = _module;
         module_element.id = module_element_id; //Initialize handle
-        // module_element.setAttribute('nwdisable', '');
-        // module_element.setAttribute('nwfaketop', '');
         let data_partition = system_module.data_partition ? system_module.data_partition : 'global';
         if(_module.identifier === 'whatsapp') {
             module_element.setAttribute('preload', `preload/whatsapp.js`); //Clear the whatsapp cache
