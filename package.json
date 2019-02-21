@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "DEBUG=true electron .",
-    "start": "node start.js"
+    "start": "node start.js",
+    "build": "electron-packager . --icon icon.icns"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^4.0.5"
+    "electron": "^4.0.5",
+    "electron-packager": "^13.1.0"
   },
   "dependencies": {
     "openurl": "^1.1.1"
