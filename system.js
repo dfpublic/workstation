@@ -121,6 +121,11 @@ System.saveConfig = function (config_name, config_data) {
 /**
  * @typedef ConfigRaw
  * @property {string} display_name
+ * @property {Array<ModuleConfig>} modules
+ */
+/**
+ * @typedef ModuleConfiig
+ * @property {string} displayname
  * @property {string} type
  * @property {string} url
  * @property {string} data_partition

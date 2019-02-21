@@ -41,9 +41,10 @@ function init(win) {
 
     ipcMain.on('main_get_configs', () => {
         let config = system.getConfigRaw();
-        let modules = system.getConfig().getModules();
+        let module_data = JSON.stringify(config.modules);
+        // let modules = system.getConfig().getModules();
         let default_module = system.getDefaultModule();
-        win.webContents.send('ui_configs_received', { config, modules, default_module })
+        win.webContents.send('ui_configs_received', { config, module_data, default_module })
     });
 }
 app.on('ready', main)

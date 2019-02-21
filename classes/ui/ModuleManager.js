@@ -19,11 +19,19 @@ class ModuleManager {
      */
     constructor(document, system_modules, options) {
         this.document = document;
-        this.modules = system_modules;
+        this.modules = this.initModuleConfig(system_modules);
         this.active_module_identifier = null;
         this.options = options;
         /** @type {Object<string, ModuleElement>} */
         this.module_elements = {};
+    }
+    //Raw configs have no identifiers, so tag them
+    initModuleConfig(system_modules) {
+        for(var identifier in system_modules) {
+            console.log(identifier);
+            system_modules[identifier].identifier = identifier;
+        }
+        return system_modules;
     }
     /**
      * Logs a string in the console
