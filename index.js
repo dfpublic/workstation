@@ -1,14 +1,18 @@
 const electron = require('electron');
 const { app, BrowserWindow, ipcMain, session } = electron;
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.106 Safari/537.36';
-
+const DEBUG = process.env.DEBUG === "true" ? true : false;
 const system = require('./system');
+const path = require('path');
 function main() {
     //Set the global user agent
     session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
         details.requestHeaders['User-Agent'] = USER_AGENT;
         callback({ cancel: false, requestHeaders: details.requestHeaders });
     });
+    // Set the configurations
+    let user_data_path = path.resolve(path.join(__dirname,`user_data/${system.getCurrentConfigName()}`))
+    app.setPath('userData', user_data_path);
     // Create the browser window.
     let win = new BrowserWindow({ width: 800, height: 600 })
     win.maximize();
@@ -23,7 +27,7 @@ function main() {
         win = null
     })
 
-    win.openDevTools({ mode: 'right' });
+    DEBUG ? win.openDevTools({ mode: 'right' }) : null;
     init(win);
 }
 /**
