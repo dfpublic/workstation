@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "modules": {
+    "whatsapp": {
+      "displayname": "Whatsapp",
+      "type": "whatsapp",
+      "url": "https://web.whatsapp.com",
+      "preload": true
+    },
+    "gmail_personal": {
+      "displayname": "Gmail (Personal)",
+      "type": "gmail",
+      "url": "https://mail.google.com",
+      "data_partition": "google_personal",
+      "preload": true
+    },
+    "google_calendar_personal": {
+      "displayname": "Google Calendar (Personal)",
+      "type": "google_calendar",
+      "url": "https://calendar.google.com",
+      "data_partition": "google_personal",
+      "preload": true
+    },
+    "gmail_work": {
+      "displayname": "Gmail (Work)",
+      "type": "gmail",
+      "url": "https://mail.google.com",
+      "data_partition": "google_work",
+      "preload": true
+    },
+    "google_calendar_work": {
+      "displayname": "Google Calendar (Work)",
+      "type": "google_calendar",
+      "url": "https://calendar.google.com",
+      "data_partition": "google_work",
+      "preload": true
+    },
+    "slack": {
+      "displayname": "Slack",
+      "type": "slack",
+      "url": "https://slack.com",
+      "preload": true
+    },
+    "telegram": {
+      "displayname": "Telegram",
+      "type": "telegram",
+      "url": "https://web.telegram.org"
+    }
+  }
+}
