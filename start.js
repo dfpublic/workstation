@@ -5,5 +5,4 @@ console.log(`Starting workstation with ${config_name} configuration.`);
 const path = require('path');
 const electron_path = path.resolve(path.join(__dirname, '/node_modules/.bin/electron'));
 let cmd = `CONFIG=${config_name} ${electron_path} .`;
-console.log(cmd);
 exec(cmd);

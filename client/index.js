@@ -11,7 +11,6 @@ ipcRenderer.on('ui_configs_received', (sender, data) => {
     let { config, module_data, default_module } = data;
     let modules = JSON.parse(module_data);
     let module_manager = new ModuleManager(document, modules, { log: console.log });
-    console.log(data);
     document.title = `Workstation (${config.display_name})`;
 
     /**

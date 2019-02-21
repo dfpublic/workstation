@@ -28,7 +28,6 @@ class ModuleManager {
     //Raw configs have no identifiers, so tag them
     initModuleConfig(system_modules) {
         for(var identifier in system_modules) {
-            console.log(identifier);
             system_modules[identifier].identifier = identifier;
         }
         return system_modules;
