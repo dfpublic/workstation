@@ -74,19 +74,18 @@ class ModuleElement {
         let { _module, module_element_id, document } = this;
         let system_module = _module;
         let url_target = system_module.url;
-        let loaded = false;
-        module_element.addEventListener('did-start-loading', function (event) {
-            if(!loaded) {
-                self.debugLog(`loading started for ${self.module_identifier}`);
-                var wv = document.getElementById('module_whatsapp');
-                wv.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.106 Safari/537.36');
-                wv.reload();
-                loaded = true;
-            }
-            // self.debugLog(module_element.getAttribute('src'));
-        });
+        // let loaded = false;
+        // module_element.addEventListener('did-start-loading', function (event) {
+        //     if(!loaded) {
+        //         self.debugLog(`loading started for ${self.module_identifier}`);
+        //         var wv = document.getElementById('module_whatsapp');
+        //         wv.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.106 Safari/537.36');
+        //         wv.reload();
+        //         loaded = true;
+        //     }
+        // });
         module_element.setAttribute('src', url_target);
-        // module_element.setAttribute('useragent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.106 Safari/537.36')
+        module_element.setAttribute('useragent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.106 Safari/537.36')
 
     }
 

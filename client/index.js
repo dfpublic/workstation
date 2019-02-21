@@ -2,7 +2,7 @@ const { ipcRenderer, remote } = require('electron');
 const { ModuleManager } = require('./../classes/ui/index');
 
 ipcRenderer.on('ui_init', () => {
-    console.log('initialized!');
+    
     ipcRenderer.send('main_get_configs');
     // window.location.href = 'https://gmail.com'
 });
@@ -11,6 +11,7 @@ ipcRenderer.on('ui_configs_received', (sender, data) => {
     let { config, modules, default_module } = data;
     let module_manager = new ModuleManager(document, modules, { log: console.log });
     console.log(data);
+    document.title = `Workstation (${config.display_name})`;
 
     /**
  * Generates all the ui elements for the navigation menu

@@ -65,8 +65,11 @@ System.upgrade = function (config_name) {
         }
     }
 }
-
-System.getConfig = function (config_name) {
+/**
+ * @param {string} [config_name]
+ * @returns {ConfigRaw}
+ */
+System.getConfigRaw = function (config_name) {
     if (!config_name) {
         config_name = System.getCurrentConfigName();
     }
@@ -87,6 +90,10 @@ System.getConfig = function (config_name) {
     }
     let contents = fs.readFileSync(filepath);
     let config_data = JSON.parse(contents.toString());
+    return config_data;
+}
+System.getConfig = function (config_name) {
+    let config_data = System.getConfigRaw(config_name);
     let config = {
         getDisplayName: function () {
             return this.display_name;
@@ -109,5 +116,13 @@ System.getConfig = function (config_name) {
 System.saveConfig = function (config_name, config_data) {
     let filepath = path.resolve(path.join(__dirname, '/config', `${config_name}.json`));
     fs.writeFileSync(filepath, JSON.stringify(config_data, null, 2));
-
 }
+
+/**
+ * @typedef ConfigRaw
+ * @property {string} display_name
+ * @property {string} type
+ * @property {string} url
+ * @property {string} data_partition
+ * @property {Boolean} preload
+ */
