@@ -1,5 +1,6 @@
 const electron = require('electron');
-const { app, BrowserWindow, ipcMain, session } = electron;
+const defaultMenu = require('electron-default-menu');
+const { Menu, app, BrowserWindow, ipcMain, session, shell } = electron;
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.106 Safari/537.36';
 const DEBUG = process.env.DEBUG === "true" ? true : false;
 const system = require('./system');
@@ -13,6 +14,10 @@ function main() {
     // Set the configurations
     let user_data_path = path.resolve(path.join(__dirname,`user_data/${system.getCurrentConfigName()}`))
     app.setPath('userData', user_data_path);
+
+    //Create menus
+    const menu = defaultMenu(app, shell);
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
     // Create the browser window.
     let win = new BrowserWindow({ width: 800, height: 600 })
     win.maximize();

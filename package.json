@@ -17,6 +17,7 @@
     "electron-packager": "^13.1.0"
   },
   "dependencies": {
+    "electron-default-menu": "^1.0.1",
     "openurl": "^1.1.1"
   }
 }
