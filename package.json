@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "DEBUG=true electron .",
     "start": "node start.js",
-    "build": "electron-packager . --icon icon.icns"
+    "build": "electron-packager . --icon \"${PWD}/assets/icon.icns\" --out \"build\"",
   },
   "keywords": [],
   "author": "",
