@@ -1,5 +1,5 @@
 const Module = require("../general/Module");
-const openurl = require('openurl');
+const { ipcRenderer, remote } = require('electron');
 class ModuleElement {
     /**
      * @param {Document} document 
@@ -52,12 +52,12 @@ class ModuleElement {
     _initModulePermissions(module_element) {
         let self = this;
         //Open links in new window
-        module_element.addEventListener('newwindow', function (event) {
-            openurl.open(event.targetUrl, () => { });
+        module_element.addEventListener('new-window', function (event) {
+            ipcRenderer.send('new-window', {url: event.url} );
         });
 
         //Request to download files
-        module_element.addEventListener('permissionrequest', function (event) {
+        module_element.addEventListener('permission-request', function (event) {
             switch (event.permission) {
                 case 'download':
                     event.request.allow();

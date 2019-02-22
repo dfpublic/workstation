@@ -46,5 +46,11 @@ function init(win) {
         let default_module = system.getDefaultModule();
         win.webContents.send('ui_configs_received', { config, module_data, default_module })
     });
+
+    ipcMain.on('new-window', (sender, data) => {
+        let {url} = data;
+        let openurl = require('openurl');
+        openurl.open(url, () => {});
+    });
 }
 app.on('ready', main)
