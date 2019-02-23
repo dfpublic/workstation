@@ -12,7 +12,7 @@ function main() {
         callback({ cancel: false, requestHeaders: details.requestHeaders });
     });
     // Set the configurations
-    let user_data_path = path.resolve(path.join(__dirname,`user_data/${system.getCurrentConfigName()}`))
+    let user_data_path = system.getSystemConfigs().user_data_path;
     app.setPath('userData', user_data_path);
 
     //Create menus
@@ -47,9 +47,12 @@ function init(win) {
     ipcMain.on('main_get_configs', () => {
         let config = system.getConfigRaw();
         let module_data = JSON.stringify(config.modules);
+        let debug = {
+            user_data_path: system.getSystemConfigs().user_data_path
+        }
         // let modules = system.getConfig().getModules();
         let default_module = system.getDefaultModule();
-        win.webContents.send('ui_configs_received', { config, module_data, default_module })
+        win.webContents.send('ui_configs_received', { config, module_data, default_module, debug })
     });
 
     ipcMain.on('new-window', (sender, data) => {

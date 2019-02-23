@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "DEBUG=true electron .",
     "start": "node start.js",
-    "build": "electron-packager . --icon \"${PWD}/assets/icon.icns\" --out \"build\" --overwrite"
+    "build": "electron-packager . --icon \"${PWD}/assets/icon.icns\" --out \"build\" --overwrite --ignore=user_data"
   },
   "keywords": [],
   "author": "",

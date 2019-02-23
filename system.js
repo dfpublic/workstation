@@ -118,13 +118,18 @@ System.saveConfig = function (config_name, config_data) {
     fs.writeFileSync(filepath, JSON.stringify(config_data, null, 2));
 }
 
+System.getSystemConfigs = function () {
+    return {
+        user_data_path: path.resolve(path.join(__dirname,`user_data/${System.getCurrentConfigName()}`))
+    };
+}
 /**
  * @typedef ConfigRaw
  * @property {string} display_name
  * @property {Array<ModuleConfig>} modules
  */
 /**
- * @typedef ModuleConfiig
+ * @typedef ModuleConfig
  * @property {string} displayname
  * @property {string} type
  * @property {string} url
