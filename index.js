@@ -1,6 +1,6 @@
 const electron = require('electron');
 const defaultMenu = require('electron-default-menu');
-const { Menu, app, BrowserWindow, ipcMain, session, shell } = electron;
+const { MenuItem, Menu, app, BrowserWindow, ipcMain, session, shell, remote } = electron;
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.106 Safari/537.36';
 const DEBUG = process.env.DEBUG === "true" ? true : false;
 const system = require('./system');
@@ -16,8 +16,44 @@ function main() {
     app.setPath('userData', user_data_path);
 
     //Create menus
-    const menu = defaultMenu(app, shell);
-    Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
+    // const menu = defaultMenu(app, shell);
+
+    // const menu = new Menu()
+
+    // menu.append(new MenuItem({
+    //     label: 'Refresh',
+    //     accelerator: 'CmdOrCtrl+R',
+    //     click: () => { console.log('time to print stuff') }
+    // }))
+    const menuTemplate = [
+        {
+            label: "Electron",
+            submenu: [ 
+                {
+                    label: 'Quit',
+                    accelerator: 'CmdOrCtrl+Q',
+                    click: () => { app.quit(); }
+                } 
+            ]
+        },
+        {
+            label: "Options",
+            submenu: [
+                {
+                    label: 'Reload current module',
+                    accelerator: 'CmdOrCtrl+R',
+                    click: () => { raise_event(win, 'reload-module') }
+                },
+                {
+                    label: 'Reload all modules',
+                    accelerator: 'CmdOrCtrl+Shift+R',
+                    click: () => { raise_event(win, 'reload-all-modules') }
+                }
+            ]
+        }
+    ];
+
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
     // Create the browser window.
     let win = new BrowserWindow({ width: 800, height: 600 })
     win.maximize();
@@ -41,7 +77,7 @@ function main() {
  */
 function init(win) {
     ipcMain.on('main_init', () => {
-        win.webContents.send('ui_init');
+        raise_event(win, 'ui_init');
     });
 
     ipcMain.on('main_get_configs', () => {
@@ -52,13 +88,22 @@ function init(win) {
         }
         // let modules = system.getConfig().getModules();
         let default_module = system.getDefaultModule();
-        win.webContents.send('ui_configs_received', { config, module_data, default_module, debug })
+        raise_event(win, 'ui_configs_received', { config, module_data, default_module, debug });
     });
 
     ipcMain.on('new-window', (sender, data) => {
-        let {url} = data;
+        let { url } = data;
         let openurl = require('openurl');
-        openurl.open(url, () => {});
+        openurl.open(url, () => { });
     });
+}
+
+/**
+ * Init main process events
+ * @param {BrowserWindow} win 
+ * @param {string} event_name
+ */
+function raise_event(win, event_name, data = undefined) {
+    win.webContents.send(event_name, data);
 }
 app.on('ready', main)

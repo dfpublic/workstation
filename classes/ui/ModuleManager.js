@@ -10,15 +10,27 @@ const MODULE_CONTAINER_PREFIX = 'module_';
 const MODULE_ACTIVATION_BUTTON_PREFIX = 'module_activator_';
 const openurl = require('openurl');
 const ModuleElement = require("./ModuleElement");
+/**
+ * @typedef {SystemModule & {identifier: string}} SystemModuleExtended
+ */
+/**
+ * @typedef SystemModule
+ * @property {string} data_partition
+ * @property {string} displayname
+ * @property {string} identifier
+ * @property {Boolean} preload
+ * @property {string} type
+ * @property {string} url
+ */
 class ModuleManager {
     /**
-     * 
      * @param {Document} document 
      * @param {Object<string, Module>} system_modules
      * @param {{log: Function}} options
      */
     constructor(document, system_modules, options) {
         this.document = document;
+        /** @type {Object<string, SystemModuleExtended>} */
         this.modules = this.initModuleConfig(system_modules);
         this.active_module_identifier = null;
         this.options = options;
@@ -127,7 +139,7 @@ class ModuleManager {
     /**
      * Gets a module by the identifier
      * @param {string} module_identifier 
-     * @returns {Module}
+     * @returns {SystemModuleExtended}
      */
     getModule(module_identifier) {
         return this.modules[module_identifier];
@@ -162,6 +174,15 @@ class ModuleManager {
     refreshModule(module_identifier) {
         let _module_element = this.module_elements[module_identifier];
         _module_element.refresh();
+    }
+    refreshAllModules() {
+        let self = this;
+        let {modules} = this;
+        let module_keys = Object.keys(modules);
+        for(var module_key of module_keys) {
+            let _module = modules[module_key];
+            self.refreshModule(_module.identifier);
+        }
     }
     /**
      * Preloads a module

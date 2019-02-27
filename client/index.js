@@ -2,7 +2,7 @@ const { ipcRenderer, remote } = require('electron');
 const { ModuleManager } = require('./../classes/ui/index');
 
 ipcRenderer.on('ui_init', () => {
-    
+
     ipcRenderer.send('main_get_configs');
     // window.location.href = 'https://gmail.com'
 });
@@ -39,5 +39,16 @@ ipcRenderer.on('ui_configs_received', (sender, data) => {
     init_app_nav();
     module_manager.setModuleActive(default_module);
     module_manager.preloadModules();
-})
+
+
+
+    ipcRenderer.on('reload-module', () => {
+        module_manager.refreshCurrentModule();
+        // window.location.href = 'https://gmail.com'
+    });
+    ipcRenderer.on('reload-all-modules', () => {
+        module_manager.refreshAllModules();
+        // window.location.href = 'https://gmail.com'
+    });
+});
 ipcRenderer.send('main_init');
