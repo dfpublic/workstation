@@ -86,6 +86,18 @@ function main() {
                     label: 'Reload all modules',
                     accelerator: 'CmdOrCtrl+Shift+R',
                     click: () => { raise_event(win, 'reload-all-modules') }
+                },
+
+                {
+                    label: 'Next module',
+                    accelerator: 'Ctrl+tab',
+                    click: () => { raise_event(win, 'switch-next-module') }
+                },
+
+                {
+                    label: 'Previous module',
+                    accelerator: 'Ctrl+Shift+Tab',
+                    click: () => { raise_event(win, 'switch-previous-module') }
                 }
             ]
         }

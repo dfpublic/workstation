@@ -44,11 +44,18 @@ ipcRenderer.on('ui_configs_received', (sender, data) => {
 
     ipcRenderer.on('reload-module', () => {
         module_manager.refreshCurrentModule();
-        // window.location.href = 'https://gmail.com'
     });
+
     ipcRenderer.on('reload-all-modules', () => {
         module_manager.refreshAllModules();
-        // window.location.href = 'https://gmail.com'
+    });
+
+    ipcRenderer.on('switch-next-module', () => {
+        module_manager.cycleForward();
+    });
+
+    ipcRenderer.on('switch-previous-module', () => {
+        module_manager.cycleBackward();
     });
 });
 ipcRenderer.send('main_init');
