@@ -1,6 +1,6 @@
 const { ipcRenderer, remote } = require('electron');
 const { ModuleManager } = require('./../classes/ui/index');
-
+const DEBUG = process.env.DEBUG === 'true' ? true : false;
 ipcRenderer.on('ui_init', () => {
 
     ipcRenderer.send('main_get_configs');
@@ -11,7 +11,7 @@ ipcRenderer.on('ui_configs_received', (sender, data) => {
     let { config, module_data, default_module, debug } = data;
     // alert(JSON.stringify(debug, null, 2));
     let modules = JSON.parse(module_data);
-    let module_manager = new ModuleManager(document, modules, { log: console.log });
+    let module_manager = new ModuleManager(document, modules, { log: console.log, debug: DEBUG});
     document.title = `Workstation (${config.display_name})`;
 
     /**

@@ -26,7 +26,7 @@ class ModuleManager {
     /**
      * @param {Document} document 
      * @param {Object<string, Module>} system_modules
-     * @param {{log: Function}} options
+     * @param {{log: Function, debug: boolean}} options
      */
     constructor(document, system_modules, options) {
         this.document = document;
@@ -70,13 +70,25 @@ class ModuleManager {
             module_element.style.display = '';
         }
         else { //There is no such module initialized so we need to create a new page
-            this.initModule(module_identifier);
+            module_element = this.initModule(module_identifier);
         }
         //Update the navigation indicators
         let activation_button = this.acquireActivationButton(module_identifier);
         activation_button.classList.add(CLASSNAME_MENU_ACTIVE);
         //Update the active modules
         this.active_module_identifier = module_identifier;
+
+        //If debug mode is on, set the module debug mode
+        if(this.options.debug) {
+           module_element.addEventListener('console-message', (e) => {
+               //Redirect logs to main console
+               console.log('MODULE DEBUG LOG:', e.message);
+           });
+
+           setTimeout(() => { //Open devtools for the debugging
+            module_element.openDevTools();
+        }, 1000);
+        }
     }
     /**
      * Deactivate a module in the user interface
@@ -207,6 +219,7 @@ class ModuleManager {
         let module_element = this.createModuleElement(module_identifier);
         //Deactivate the old module and insert the current one
         module_container.appendChild(module_element);
+        return module_element;
     }
 
     /**

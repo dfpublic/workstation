@@ -6,7 +6,7 @@ class ModuleElement {
      * @param {Module} _module
      * @param {string} identifier
      * @param {string} module_element_id
-     * @param {{log: Function}} options
+     * @param {{log: Function, debug: boolean}} options
      */
     constructor(document, _module, identifier, module_element_id, options) {
         this.document = document;
@@ -31,11 +31,11 @@ class ModuleElement {
      * @param {HTMLElement} module_element 
      */
     _initModuleCore(module_element) {
-        let { _module, module_element_id } = this;
+        let { _module, module_element_id, options } = this;
         let system_module = _module;
         module_element.id = module_element_id; //Initialize handle
         let data_partition = system_module.data_partition ? system_module.data_partition : 'global';
-        if(_module.identifier === 'whatsapp') {
+        if (_module.identifier === 'whatsapp') {
             module_element.setAttribute('preload', `preload/whatsapp.js`); //Clear the whatsapp cache
         }
         module_element.setAttribute('partition', `persist:${data_partition}`); //Set the data partition
@@ -53,7 +53,7 @@ class ModuleElement {
         let self = this;
         //Open links in new window
         module_element.addEventListener('new-window', function (event) {
-            ipcRenderer.send('new-window', {url: event.url} );
+            ipcRenderer.send('new-window', { url: event.url });
         });
 
         //Request to download files
@@ -65,7 +65,7 @@ class ModuleElement {
             }
         });
     }
-    
+
     /**
      * @param {HTMLElement} module_element 
      */
@@ -97,6 +97,13 @@ class ModuleElement {
         let module_element_id = self.module_element_id;
         let module_element = self.document.getElementById(module_element_id);
         module_element.reload();
+    }
+    redirectLogsToMainConsole() {
+        let { module_element } = this;
+        module_element.addEventListener('console-message', (e) => {
+            //Redirect logs to main console
+            console.log('MODULE DEBUG LOG:', e.message);
+        });
     }
 }
 module.exports = ModuleElement;
