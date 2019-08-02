@@ -8,7 +8,7 @@ window.onload = () => {
     let watched_container = document.querySelector('.landing-title');
     if(watched_container) {
         const title = watched_container.innerHTML;
-        if (title && title.includes('Google Chrome 36+')) {
+        if (title && title.includes('Google Chrome 49+')) {
             session.flushStorageData();
             session.clearStorageData({
                 storages: ['serviceworkers'],
