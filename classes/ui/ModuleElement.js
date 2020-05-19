@@ -1,8 +1,8 @@
-const Module = require("../general/Module");
+const Module = require('../general/Module');
 const { ipcRenderer, remote } = require('electron');
 class ModuleElement {
     /**
-     * @param {Document} document 
+     * @param {Document} document
      * @param {Module} _module
      * @param {string} identifier
      * @param {string} module_element_id
@@ -13,6 +13,7 @@ class ModuleElement {
         this.module_identifier = identifier;
         this._module = _module;
         this.module_element = this.document.createElement('webview');
+
         this.module_element_id = module_element_id;
         this.options = options;
         this.init();
@@ -24,11 +25,12 @@ class ModuleElement {
         let { module_element } = this;
         this._initModuleCore(module_element);
         this._initModuleStyles(module_element);
+        this._initModuleHooks(module_element);
         this._initModulePermissions(module_element);
         this._initModuleSource(module_element);
     }
     /**
-     * @param {HTMLElement} module_element 
+     * @param {HTMLElement} module_element
      */
     _initModuleCore(module_element) {
         let { _module, module_element_id, options } = this;
@@ -41,13 +43,38 @@ class ModuleElement {
         module_element.setAttribute('partition', `persist:${data_partition}`); //Set the data partition
     }
     /**
-     * @param {HTMLElement} module_element 
+     * @param {HTMLElement} module_element
      */
     _initModuleStyles(module_element) {
         module_element.classList.add('module-element');
     }
     /**
-     * @param {HTMLElement} module_element 
+     * @param {HTMLElement} module_element
+     */
+    _initModuleHooks(module_element) {
+        module_element.addEventListener('focus', function () {
+            module_element.getWebContents().on('before-input-event', (event, input) => {
+                if (input.type !== 'keyDown') {
+                    return;
+                }
+
+                // Create a fake KeyboardEvent from the data provided
+                const emulatedKeyboardEvent = new KeyboardEvent('keydown', {
+                    code: input.code,
+                    key: input.key,
+                    shiftKey: input.shift,
+                    altKey: input.alt,
+                    ctrlKey: input.control,
+                    metaKey: input.meta,
+                    repeat: input.isAutoRepeat,
+                });
+
+                // do something with the event as before
+            });
+        });
+    }
+    /**
+     * @param {HTMLElement} module_element
      */
     _initModulePermissions(module_element) {
         let self = this;
@@ -67,7 +94,7 @@ class ModuleElement {
     }
 
     /**
-     * @param {HTMLElement} module_element 
+     * @param {HTMLElement} module_element
      */
     _initModuleSource(module_element) {
         let self = this;
@@ -85,8 +112,10 @@ class ModuleElement {
         //     }
         // });
         module_element.setAttribute('src', url_target);
-        module_element.setAttribute('useragent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.106 Safari/537.36')
-
+        module_element.setAttribute(
+            'useragent',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.106 Safari/537.36'
+        );
     }
 
     getHTMLElement() {
